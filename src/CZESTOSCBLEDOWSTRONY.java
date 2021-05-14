@@ -41,7 +41,7 @@ public class CZESTOSCBLEDOWSTRONY {
         wstrzymaneProcesy=0;
     }
 
-
+//pisze jakas zmiane czy to dziala?
 
     public int uruchom(int ileRamek){
         System.out.println();
