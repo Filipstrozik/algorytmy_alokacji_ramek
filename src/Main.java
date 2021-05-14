@@ -32,4 +32,6 @@ public class Main {
 
     //7 - windowSize;
     //8 - C ile?
+
+    //zmieniam na laptopie i robie commit i push
 }
