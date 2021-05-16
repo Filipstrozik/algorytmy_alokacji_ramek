@@ -78,15 +78,33 @@ public class CZESTOSCBLEDOWSTRONY {
                         for(int j=0; j<windowSize;j++){
                             lokalneBledyProcesuWOknieCzasowym.add(procesList.get(i).getListaStron().get(j));
                         }
-                        tempBledy = procesList.get(i).uruchomLRU(lokalneBledyProcesuWOknieCzasowym, procesList.get(i).getNumerRamek());
-                        sumaBledow += tempBledy;
-                        if(tempBledy > 0.5*windowSize){
-                            szamotanie++;
+                        //TODO jednak pomysl z odjeciem jest bez sensu, lepiej w pierwszych windowSize ruchah nie pozwolic na wsztrymywanie, lub po prostu nie brac pod uwage PPF
+
+                        System.out.println(procesList.get(i).getRecentRamki());
+                        if(procesList.get(i).getRecentRamki().isEmpty()){
+                            System.out.println("Wchodze tylko raz na poczatku!");
+                            tempBledy = procesList.get(i).uruchomLRU(lokalneBledyProcesuWOknieCzasowym, procesList.get(i).getNumerRamek());
+                            sumaBledow += tempBledy;
+                            if(tempBledy > 0.5*windowSize){
+                                szamotanie++;
+                            }
+
+                            PPF = tempBledy;
+                            System.out.println("PFF przed redukcja: "+PPF);
+                            PPF-=procesList.get(i).getNumerRamek();
+                            System.out.println("PFF po redukcji: "+PPF);
+
+                        } else {
+                            tempBledy = procesList.get(i).uruchomLRU(lokalneBledyProcesuWOknieCzasowym, procesList.get(i).getNumerRamek());
+                            sumaBledow += tempBledy;
+                            if(tempBledy > 0.5*windowSize){
+                                szamotanie++;
+                            }
+                            PPF = tempBledy;
                         }
-                        //TODO pomysl jest taki zeby od pff odjac ilosc ramek ktora ma proces
-                        PPF = tempBledy;
 
                         System.out.println(procesList.get(i).getNumerProcesu()+"  "+PPF);
+
                         if(PPF >u){
                             if(wolneRamki >0){// proces otrzymuje dodatkowa ramke
                                 System.out.println("Proces: " + procesList.get(i).getNumerProcesu() + " PFF>u");

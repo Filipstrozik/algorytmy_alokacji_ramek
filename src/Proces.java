@@ -156,6 +156,9 @@ public class Proces implements Cloneable{
     }
 
 
+    public HashSet<Integer> getRecentRamki(){
+        return recentRamki;
+    }
 
     public void isStopped(boolean isStopped) {
         this.isStopped = isStopped;
