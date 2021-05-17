@@ -22,7 +22,7 @@ public class STREFOWY {
     private Comparator<Proces> comparatorKolejnosci = new ComparatorKolejnosci();
 
 
-    public STREFOWY(ArrayList<Proces> procesList, int C){
+    public STREFOWY(ArrayList<Proces> procesList, int C, int wS){
         this.procesList = procesList;
         ileWszystkichStron=0;
         for(Proces p:procesList){
@@ -34,7 +34,7 @@ public class STREFOWY {
             p.isStopped(false);
         }
         ileProcesow = procesList.size();
-        windowSize =10;
+        windowSize =wS;
         WSS =0;
         sumaBledow=0;
         tempBledy=0;
@@ -70,13 +70,7 @@ public class STREFOWY {
             System.out.println("Proc: " +(i+1)+ " ile stron: "+ procesList.get(i).getListaStron().size() +
                     " (ileRamek: "+ procesList.get(i).getNumerRamek() +")");
         }
-//        for(int i=0; i<procesList.size();i++){
-//            WSS = ileUnikalnych(procesList.get(i).getListaStron(), windowSize);
-//            procesList.get(i).setNumerRamek(WSS);
-//            System.out.println("Proc: " +(i+1)+ " ile stron: "+ procesList.get(i).getListaStron().size() +
-//                    " (ileRamek: "+ procesList.get(i).getNumerRamek() +")");
-//        }
-//
+
         ArrayList<Strona> lokalneBledyProcesuWOknieCzasowym = new ArrayList<>();
         while (zakonczoneProcesy != ileProcesow){
             //wyznacz D
@@ -84,26 +78,28 @@ public class STREFOWY {
                 if(!procesList.get(i).getIsFinished() && !procesList.get(i).getListaStron().isEmpty()){ //chodzi nam tylko o te dzialajace jeszcze
                     procesList.get(i).isStopped(false); // wznawianie procesuow
                     ArrayList<Strona> tempWSS = new ArrayList<>();
-                    if(procesList.get(i).indeks>=(windowSize-1)){
-                        for(int z=(procesList.get(i).indeks -(windowSize-1));z<=procesList.get(i).indeks;z++){
-                            tempWSS.add(procesList.get(i).getListaStron().get(z));
-                        }
-                        procesList.get(i).setProcesWSS(ileUnikalnych(tempWSS,windowSize)); //przypinamy chwilawa wartosc wss do procesu ale jeszcze nie zatwierdzamy jej
-                    } else if(procesList.get(i).indeks<(windowSize-1)){
-                        for(int z =0; z<=procesList.get(i).indeks;z++){
-                            tempWSS.add(procesList.get(i).getListaStron().get(z));
-                        }
-                        procesList.get(i).setProcesWSS(ileUnikalnych(tempWSS,procesList.get(i).indeks+1)); //przypinamy chwilawa wartosc wss do procesu ale jeszcze nie zatwierdzamy jej
+                    if(procesList.get(i).indeks>0){
+                        if(procesList.get(i).indeks>=windowSize){
+                            for(int z=(procesList.get(i).indeks - (windowSize));z<=procesList.get(i).indeks;z++){
+                                tempWSS.add(procesList.get(i).getListaStron().get(z));
+                            }
+                            procesList.get(i).setProcesWSS(ileUnikalnych(tempWSS,windowSize)); //przypinamy chwilawa wartosc wss do procesu ale jeszcze nie zatwierdzamy jej
+                        } else if(procesList.get(i).indeks<(windowSize)){
+                            for(int z =0; z<=procesList.get(i).indeks;z++){
+                                tempWSS.add(procesList.get(i).getListaStron().get(z));
+                            }
+                            procesList.get(i).setProcesWSS(ileUnikalnych(tempWSS,procesList.get(i).indeks+1)); //przypinamy chwilawa wartosc wss do procesu ale jeszcze nie zatwierdzamy jej
 
+                        }
+                        D+=procesList.get(i).getProcesWSS();//sumowanie do D
                     }
 
-                    D+=procesList.get(i).getProcesWSS();//sumowanie do D
                 }
             }
 
-
+            System.out.println("D<ileRamek: "+D+"  "+ileRamek);
             while (D>ileRamek){
-                System.out.println("PETLA?");
+                System.out.println("PETLA?"); //TODO zawsze jest od 10 do 7
                 for(Proces p:procesList){ //TODO przejdz na kartce z tym lepiej xd
                     if(!p.getIsFinished() && !p.getIsStopped()){
                         if(p.getProcesWSS()<procesList.get(minIndex).getProcesWSS() && !procesList.get(minIndex).getIsStopped() && !procesList.get(minIndex).getIsFinished()){
@@ -115,16 +111,29 @@ public class STREFOWY {
 
                 }
                 //znaleziony do wstrzymania
+                System.out.println("Wstrzymuje proces: "+procesList.get(minIndex).getNumerProcesu());
                 procesList.get(minIndex).isStopped(true);//wstrzymujesz
                 D-=procesList.get(minIndex).getProcesWSS(); //odejmujesz jego wss od D (D sie zmniejszy az wejdzie w pierwszy if)
                 wolneRamki = procesList.get(minIndex).getNumerRamek();
+                procesList.get(minIndex).setNumerRamek(Integer.MAX_VALUE); //ryzykowne posuniecie
+                //TODO wss dla poczotkwoych jest rowne ifninity
                 //przydzial proporcjonalny
-                while(wolneRamki>0){
-                    procesList.sort(comparatorWss); //gitara
-                    procesList.get(0).dodajRamke(1);
-                    wolneRamki--;
+                int temp =0;
+                while(wolneRamki>0){ //TODO nie dawaj wstrzymanym
+                    procesList.sort(comparatorWss);
+                    System.out.println("WOLNE RAMKI; "+ wolneRamki +" proces: "+procesList.get(temp).getNumerProcesu()+" kolejka "+procesList);
+                    if(procesList.get(temp).getIsStopped()){
+                        temp++;
+                    } else {
+                        System.out.println("oddano!");
+                        procesList.get(temp).dodajRamke(1);
+                        wolneRamki--;
+                    }
                 }
+
                 procesList.sort(comparatorKolejnosci);
+                procesList.get(minIndex).setNumerRamek(0); //ryzykowne posuniecie
+
 
             }
             System.out.println("D<ileRamek: "+D+"  "+ileRamek);
@@ -132,38 +141,47 @@ public class STREFOWY {
             for(int i=0;i<ileProcesow;i++){ //tutaj mamy same aktywne ktrore licza lru
                 if(!procesList.get(i).getIsStopped()){
                     if(!procesList.get(i).getIsFinished()){
-                        if(procesList.get(i).getListaStron().size()-procesList.get(i).indeks>C){ //zliczanie bledow co C
+                        if(procesList.get(i).getListaStron().size()-procesList.get(i).indeks>windowSize){
                             if(procesList.get(i).getNumerRamek()<procesList.get(i).getProcesWSS()){
                                 procesList.get(i).setNumerRamek(procesList.get(i).getProcesWSS());//zatwierdzone WSS!
                             }
+                            System.out.println("Proc: "+procesList.get(i).getNumerProcesu() +" RAMKI : "+procesList.get(i).getNumerRamek());
                             for(int j=0; j<C;j++){
+                                System.out.print(procesList.get(i).getListaStron().get(procesList.get(i).indeks)+" ");
+                                lokalneBledyProcesuWOknieCzasowym.add(procesList.get(i).getListaStron().get(procesList.get(i).indeks));
                                 procesList.get(i).indeks++;
-                                lokalneBledyProcesuWOknieCzasowym.add(procesList.get(i).getListaStron().get(procesList.get(i).indeks));//
                             }
                             tempBledy = procesList.get(i).uruchomLRU(lokalneBledyProcesuWOknieCzasowym, procesList.get(i).getNumerRamek());
-                            procesList.get(i).recentBledy = tempBledy;
+                            procesList.get(i).recentBledy += tempBledy;
                             sumaBledow += tempBledy;
                             if(procesList.get(i).indeks % windowSize==0 && procesList.get(i).indeks>0)
                             {
-                                System.out.println("Proc: " +procesList.get(i).getNumerProcesu()+" indeks: "+ procesList.get(i).indeks+ " tempBledy: "+tempBledy+" prog: "+Math.ceil(0.5*windowSize));
+                                System.out.println("Proc: " +procesList.get(i).getNumerProcesu()+" indeks: "+ procesList.get(i).indeks+ " recentBledy: "+procesList.get(i).recentBledy+" prog: "+Math.ceil(0.5*windowSize));
                                 if(procesList.get(i).recentBledy > Math.ceil(0.5*windowSize)){
                                     System.out.println("Im in!");
                                     szamotanie++;
                                 }
+                                procesList.get(i).recentBledy=0;
                             }
                             lokalneBledyProcesuWOknieCzasowym.clear(); // resetowanie lokalnych bledow
-                        } else if((procesList.get(i).getListaStron().size()-1)-procesList.get(i).indeks <=C){
-                            procesList.get(i).setNumerRamek(procesList.get(i).getProcesWSS());//zatwierdzone WSS!
-
-                            for(int j=0; j<(procesList.get(i).getListaStron().size()-1)-procesList.get(i).indeks;j++){
-                                procesList.get(i).indeks++;
-                                lokalneBledyProcesuWOknieCzasowym.add(procesList.get(i).getListaStron().get(procesList.get(i).indeks));
+                        } else if(procesList.get(i).getListaStron().size()-procesList.get(i).indeks <=windowSize){
+                            System.out.println("Proces: "+procesList.get(i).getNumerProcesu()+" indeks " + procesList.get(i).indeks+" ramki:" +procesList.get(i).getNumerRamek());
+                            System.out.println("Proces: "+procesList.get(i).getNumerProcesu()+" roznica "+(procesList.get(i).getListaStron().size()-procesList.get(i).indeks));
+                            if(procesList.get(i).indeks>0 || procesList.get(i).getNumerRamek()<procesList.get(i).getProcesWSS()){
+                                procesList.get(i).setNumerRamek(procesList.get(i).getProcesWSS());//zatwierdzone WSS!
                             }
-                            tempBledy = procesList.get(i).uruchomLRU(lokalneBledyProcesuWOknieCzasowym, procesList.get(i).getNumerRamek());
+                            int diff = procesList.get(i).getListaStron().size()-procesList.get(i).indeks;
+                            for(int j=0; j<diff;j++){
+                                System.out.println(procesList.get(i).getListaStron().get(procesList.get(i).indeks));
+
+                                lokalneBledyProcesuWOknieCzasowym.add(procesList.get(i).getListaStron().get(procesList.get(i).indeks));
+                                procesList.get(i).indeks++;
+                            }
+                            tempBledy = procesList.get(i).uruchomLRU(lokalneBledyProcesuWOknieCzasowym, procesList.get(i).getNumerRamek()); //TODO dodaj do recent bledy
                             sumaBledow += tempBledy;
                             System.out.println("Proc: " +procesList.get(i).getNumerProcesu()+" indeks: "+ procesList.get(i).indeks+ " tempBledy: "+
-                                    tempBledy+" prog: "+(procesList.get(i).getListaStron().size()-procesList.get(i).indeks)+ " size: "+procesList.get(i).getListaStron().size());
-                            if(tempBledy > Math.ceil(0.5*(procesList.get(i).getListaStron().size()-procesList.get(i).indeks))){ //byc moze zmienic
+                                    tempBledy+" prog: "+Math.ceil(0.5*(diff))+ " size: "+procesList.get(i).getListaStron().size()+" RAMKI: "+procesList.get(i).getNumerRamek());
+                            if(tempBledy > Math.ceil(0.5*(windowSize))){ //byc moze zmienic
                                 szamotanie++;
                             }
                             System.out.println("Proces " + procesList.get(i).getNumerProcesu() + " zakonczony. Bledy = "+tempBledy);
@@ -197,37 +215,3 @@ public class STREFOWY {
     }
 
 }
-
-
-//            for(int i = 0 ;i<procesList.size();i++){
-//        System.out.println(wolneRamki+"   "+procesList.get(i).getNumerRamek()+ "   "+procesList.get(i).getIsStopped() );
-//        if(wolneRamki > procesList.get(i).getNumerRamek() && !procesList.get(i).getIsStopped()){
-//        zakonczoneProcesy++;
-//
-//        ilePotrzebnychRamek = procesList.get(i).getNumerRamek();
-//        wolneRamki -= ilePotrzebnychRamek;
-//        if(procesList.get(i).getNumerRamek() != 0){
-//        LRU newLRU = new LRU(procesList.get(i).getListaStron());
-//        int tempBledy = newLRU.uruchom(procesList.get(i).getNumerRamek());
-//        sumaBledow +=tempBledy;
-//        if(tempBledy >= 0.5*windowSize){
-//        szamotanie++;
-//        }
-//        }
-//        } else if(!procesList.get(i).getIsStopped()){
-//
-//        for(Proces p:procesList){
-//        if(!p.getIsStopped() && !procesList.get(minIndex).getIsStopped() && p.getNumerRamek() < procesList.get(minIndex).getNumerRamek()){
-//        minIndex = p.getNumerProcesu()-1;
-//        } else if(!p.getIsStopped() && procesList.get(minIndex).getIsStopped()){
-//        minIndex = p.getNumerProcesu()-1;
-//        }
-//        }
-//        zakonczoneProcesy++;
-//        procesList.get(minIndex).isStopped(true);
-//        wstrzymaneProcesy++;
-//        System.out.println("The process number: " + procesList.get(minIndex).getNumerProcesu() + " has been stopped." +
-//        "Total number of stopped processes: " + wstrzymaneProcesy);
-//        }
-//        }
-//        wolneRamki = ileRamek;

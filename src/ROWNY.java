@@ -6,11 +6,11 @@ public class ROWNY {
     private int szamotanie;
     private int windowSize;
 
-    public ROWNY(ArrayList<Proces> procesList){
+    public ROWNY(ArrayList<Proces> procesList, int wS){
         this.procesList = procesList;
         //jakies bez sensu sortowanie
         ileProcesow = procesList.size();
-        windowSize = 10; //TODO parametr?
+        windowSize = wS; //TODO parametr?
     }
 
     public int uruchom(int ileRamek){

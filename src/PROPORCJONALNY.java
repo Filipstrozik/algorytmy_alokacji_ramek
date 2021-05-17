@@ -12,7 +12,7 @@ public class PROPORCJONALNY {
     private Comparator<Proces> comparatorPrzydzialu = new ComparatorPrzydzialu();
     private Comparator<Proces> comparatorKolejnosci = new ComparatorKolejnosci();
 
-    public PROPORCJONALNY(ArrayList<Proces> procesList){
+    public PROPORCJONALNY(ArrayList<Proces> procesList, int wS){
         this.procesList = new ArrayList<>(procesList);
         iloscWszystkichStron =0;
         for(Proces p: procesList){
@@ -22,7 +22,7 @@ public class PROPORCJONALNY {
             }
         }
         ileProcesow = procesList.size();
-        windowSize =10;//TODO parametr
+        windowSize =wS;//TODO parametr
     }
 
     public int uruchom(int ileRamek){

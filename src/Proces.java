@@ -16,6 +16,7 @@ public class Proces implements Cloneable{
     private Generator gen;
     int indeks;
     int recentBledy;
+    boolean validPPF;
 
     private HashSet<Integer> recentRamki = new HashSet<>();
     private HashMap<Integer, Integer> recentIndeksy = new HashMap<>();
@@ -37,6 +38,7 @@ public class Proces implements Cloneable{
         this.isFinished = false;
         procesWSS=0;
         recentBledy=0;
+        validPPF=true;
     }
 
     public Proces (int numerStron, ArrayList<Strona> listaStron,int numerProcesu) {
@@ -49,6 +51,7 @@ public class Proces implements Cloneable{
         this.isFinished= false;
         procesWSS=0;
         recentBledy=0;
+        validPPF=true;
     }
 
     public double iloscRamekDlaStrony(){
@@ -168,6 +171,10 @@ public class Proces implements Cloneable{
         return isStopped;
     }
 
+    @Override
+    public String toString() {
+        return ""+numerProcesu;
+    }
 
     public int uruchomLRU(ArrayList<Strona> list, int iloscRamek){
         int bledyStron=0;
