@@ -16,6 +16,7 @@ public class Proces implements Cloneable{
     private Generator gen;
     int indeks;
     int recentBledy;
+    int recentPPF;
     boolean validPPF;
 
     private HashSet<Integer> recentRamki = new HashSet<>();
@@ -60,6 +61,10 @@ public class Proces implements Cloneable{
 
     public double iloscWssDlaRamek(){
         return (double) numerRamek/procesWSS;
+    }
+
+    public double iloscPPF(){
+        return (double) numerRamek/recentPPF;
     }
 
     public void setNumerRamek(int numerRamek){

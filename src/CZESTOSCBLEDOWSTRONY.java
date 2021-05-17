@@ -19,6 +19,7 @@ public class CZESTOSCBLEDOWSTRONY {
     int tempBledy;
     private Comparator<Proces> comparatorPrzydzialu = new ComparatorPrzydzialu();
     private Comparator<Proces> comparatorKolejnosci = new ComparatorKolejnosci();
+    private Comparator<Proces> comparatorPPF = new ComparatorPPF();
 
 
     public CZESTOSCBLEDOWSTRONY(ArrayList<Proces> procesList, int wS){
@@ -66,7 +67,7 @@ public class CZESTOSCBLEDOWSTRONY {
 
         ArrayList<Strona> lokalneBledyProcesuWOknieCzasowym = new ArrayList<Strona>();
 
-        while (zakonczoneProcesy != ileProcesow){
+        while (zakonczoneProcesy <= ileProcesow){
              for(int i=0; i<procesList.size(); i++){
                  if(!procesList.get(i).getIsStopped()){
                     if(procesList.get(i).getListaStron().size()>windowSize){
@@ -76,10 +77,8 @@ public class CZESTOSCBLEDOWSTRONY {
 
                         System.out.println(procesList.get(i).getRecentRamki());
                         if(procesList.get(i).getRecentRamki().isEmpty()){
-                            System.out.println("Wchodze tylko raz na poczatku!");
                             procesList.get(i).validPPF=false;
                         } else {
-                            System.out.println("Wchodze za kolejnym razem");
                             procesList.get(i).validPPF=true;
                         }
 
@@ -89,6 +88,7 @@ public class CZESTOSCBLEDOWSTRONY {
                             szamotanie++;
                         }
                         PPF = tempBledy;
+                        procesList.get(i).recentPPF = PPF;
 
                         System.out.println(procesList.get(i).getNumerProcesu()+"  "+PPF+"   "+procesList.get(i).validPPF);
                         System.out.println("WOLNE RAMKI: "+wolneRamki);
@@ -96,7 +96,7 @@ public class CZESTOSCBLEDOWSTRONY {
                             if(wolneRamki >0){// proces otrzymuje dodatkowa ramke
                                 System.out.println("Proces: " + procesList.get(i).getNumerProcesu() + " PFF>u proces otrzymuje jedna ramke");
                                 System.out.println("WOLNE RAMKI: "+wolneRamki);
-                                System.out.println("Liczba ramek procesu:"+procesList.get(i).getNumerProcesu()+"  = "+procesList.get(i).getNumerRamek());
+                                System.out.println("Liczba ramek procesu: "+procesList.get(i).getNumerProcesu()+"  = "+procesList.get(i).getNumerRamek());
                                 procesList.get(i).setNumerRamek(procesList.get(i).getNumerRamek()+1);
                                 wolneRamki--;
                                 System.out.println("Liczba ramek procesu po dodaniu: "+procesList.get(i).getNumerRamek());
@@ -105,11 +105,14 @@ public class CZESTOSCBLEDOWSTRONY {
                             } else { //wstrzymywanie procesu
                                 procesList.get(i).isStopped(true);
                                 wstrzymaneProcesy++;
-                                zakonczoneProcesy++;
+
+//                                zakonczoneProcesy++; //to nie mozemy robic tego
                                 System.out.println("Proces: " + procesList.get(i).getNumerProcesu() + " zostal wstrzymany. Wstrzymane: " + wstrzymaneProcesy);
                                 wolneRamki += procesList.get(i).getNumerRamek();
+                                procesList.get(i).setNumerRamek(0);
                             }
                         }
+
                         //TODO Wolne ramki rozdziela się wledy miedzy procesy z najwyższymi częstościami braków stron! TO JEST BARDZO WAZNE ZEBY ALGORYTM SIE NIE NUDZIL A ZEBY BYLY ZAPELNIONE RAMK
                         //TODO CZYLI MNIEJ BLEDOW STRON!
                         if(PPF < I){ //proces zwalnia jedna z ramek
@@ -146,9 +149,38 @@ public class CZESTOSCBLEDOWSTRONY {
                         System.out.println("Proces: " + procesList.get(i).getNumerProcesu() + " zakonczony. Bledy = "+tempBledy);
                         zakonczoneProcesy++;
                         wolneRamki+=procesList.get(i).getNumerRamek();
-                        procesList.get(i).isStopped(true);
+                        procesList.get(i).setNumerRamek(0);
+                        procesList.get(i).setIsFinished(true);
                     }
                  }
+             }
+             //TODO wznawianie procesu?
+            if(wstrzymaneProcesy>0){
+                for(Proces p:procesList){
+                    if(!p.getIsFinished() && p.getIsStopped() && wolneRamki>2*ileRamek/ileProcesow){
+                        p.isStopped(false);
+                        p.setNumerRamek(ileRamek/ileProcesow);
+                        wstrzymaneProcesy--;
+                        System.out.println("Proces: " + p.getNumerProcesu() + " zostal wznowiony. Wstrzymane: " + wstrzymaneProcesy);
+                        wolneRamki-= p.getNumerRamek();
+                    }
+                }
+            }
+            System.out.println("zakonczone: "+zakonczoneProcesy);
+             if(zakonczoneProcesy <= ileProcesow){
+                 int temp=0;
+                 while (wolneRamki>ileRamek/ileProcesow && temp<ileProcesow){ //to je rozdziel
+                     procesList.sort(comparatorPPF);
+                     System.out.println("WOLNE RAMKI "+ wolneRamki +" proces: "+procesList.get(temp).getNumerProcesu()+" kolejka "+procesList);
+                     if(procesList.get(temp).getIsStopped() || procesList.get(temp).getIsFinished()){ // tu bycmoze trzeba
+                         temp++;
+                     } else {
+                         System.out.println("oddano!");
+                         procesList.get(temp).dodajRamke(1);
+                         wolneRamki--;
+                     }
+                 }
+                 procesList.sort(comparatorKolejnosci);
              }
         }
         System.out.println();
