@@ -10,7 +10,7 @@ public class ROWNY {
         this.procesList = procesList;
         //jakies bez sensu sortowanie
         ileProcesow = procesList.size();
-        windowSize = wS; //TODO parametr?
+        windowSize = wS;
     }
 
     public int uruchom(int ileRamek){

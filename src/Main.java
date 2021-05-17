@@ -40,10 +40,8 @@ public class Main {
 
     //TODO poniżej
     //parametry:
-    //1 - ilosc ramek dostepnych w systemie - tutaj
-    //2 - ilosc procesow - tutaj
-    //3 - makxymalny dlugosc ciag odwolan - generator ciagow
-    //4 - jak dlugo dziala zasada lokalnosci - generator ciagow
+
+
     //5 - podzbior niech bedzie automatycznie  - automatycznie
 
     //inne:

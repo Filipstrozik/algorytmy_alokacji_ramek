@@ -27,13 +27,7 @@ public class Symulacja {
             for(Strona s:listaStron){
                 System.out.print(s.toString()+", ");
             }
+            System.out.println();
         }
-//        for(int i=0; i<listaProcesow2.size();i++){
-//            ArrayList<Strona> listaStron = listaProcesow2.get(i).getListaStron();
-//            System.out.println("Proces "+(i+1)+" : ");
-//            for(Strona s:listaStron){
-//                System.out.println(s.toString());
-//            }
-//        }
     }
 }

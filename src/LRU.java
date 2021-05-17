@@ -51,7 +51,7 @@ public class LRU {
     }
 
 
-    public int uruchom(int iloscRamek){ //dla statycznych form przydzielania ramek
+    public int uruchom(int iloscRamek){ //dla statycznych form przydzielania ramek //TODO przejs po iterowanym kodzie
         int bledy =0;
         int notUsedTime;
         int indexOfLongestNotUsedTime;

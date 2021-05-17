@@ -22,7 +22,7 @@ public class PROPORCJONALNY {
             }
         }
         ileProcesow = procesList.size();
-        windowSize =wS;//TODO parametr
+        windowSize =wS;
     }
 
     public int uruchom(int ileRamek){
