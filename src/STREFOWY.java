@@ -53,7 +53,7 @@ public class STREFOWY {
         if(ileRamek<ileProcesow){
             System.out.println("nie wystarczajaco ramek");
         }
-        int minIndex =0;
+
         int resztaRamek = ileRamek - ileProcesow;
         for(Proces p:procesList){
             p.dodajRamke(1);
@@ -105,19 +105,18 @@ public class STREFOWY {
 
             System.out.println("D<ileRamek: "+D+"  "+ileRamek);
             while (D>ileRamek){
-                System.out.println("PETLA?"); //TODO zawsze jest od 10 do 7 o tak o jtak
-                for(Proces p:procesList){ //TODO przejdz na kartce z tym lepiej xd
+                System.out.println("PETLA?");
+                int minIndex =0;
+                for(Proces p:procesList){
                     if(!p.getIsFinished() && !p.getIsStopped()){
+                        System.out.println("p.getProces "+p.getNumerProcesu()+" WSS= " + p.getProcesWSS() + " minIndex: "+procesList.get(minIndex).getNumerProcesu()+" WSS= " +procesList.get(minIndex).getProcesWSS());
                         if(p.getProcesWSS()<procesList.get(minIndex).getProcesWSS() && !procesList.get(minIndex).getIsStopped() && !procesList.get(minIndex).getIsFinished()){
-                            minIndex = p.getNumerProcesu()-1;
-                        } else {
+                            //jak znalesc dobrze?
                             minIndex = p.getNumerProcesu()-1;
                         }
                     }
-
                 }
                 //znaleziony do wstrzymania
-                //TODO znaleienie do wstrzymania nie dziala zawsze 10 potem 9 potem 8 itd - naprawic
                 System.out.println("Wstrzymuje proces: "+procesList.get(minIndex).getNumerProcesu());
                 procesList.get(minIndex).isStopped(true);//wstrzymujesz
                 D-=procesList.get(minIndex).getProcesWSS(); //odejmujesz jego wss od D (D sie zmniejszy az wejdzie w pierwszy if)
@@ -128,7 +127,7 @@ public class STREFOWY {
                 int temp =0;
                 while(wolneRamki>0){ //TODO nie dawaj wstrzymanym
                     procesList.sort(comparatorWss);
-//                    System.out.println("WOLNE RAMKI; "+ wolneRamki +" proces: "+procesList.get(temp).getNumerProcesu()+" kolejka "+procesList);
+                    System.out.println("WOLNE RAMKI; "+ wolneRamki +" proces: "+procesList.get(temp).getNumerProcesu()+" kolejka "+procesList);
                     if(procesList.get(temp).getIsStopped()){
                         temp++;
                     } else {
@@ -139,7 +138,7 @@ public class STREFOWY {
                 }
 
                 procesList.sort(comparatorKolejnosci);
-                procesList.get(minIndex).setNumerRamek(0); //ryzykowne posuniecie
+                procesList.get(minIndex).setNumerRamek(0); //ryzykowne posuniecie, ale dziala
 
 
             }
@@ -184,7 +183,7 @@ public class STREFOWY {
                                 lokalneBledyProcesuWOknieCzasowym.add(procesList.get(i).getListaStron().get(procesList.get(i).indeks));
                                 procesList.get(i).indeks++;
                             }
-                            tempBledy = procesList.get(i).uruchomLRU(lokalneBledyProcesuWOknieCzasowym, procesList.get(i).getNumerRamek()); //TODO dodaj do recent bledy
+                            tempBledy = procesList.get(i).uruchomLRU(lokalneBledyProcesuWOknieCzasowym, procesList.get(i).getNumerRamek());
                             sumaBledow += tempBledy;
                             System.out.println("Proc: " +procesList.get(i).getNumerProcesu()+" indeks: "+ procesList.get(i).indeks+ " tempBledy: "+
                                     tempBledy+" prog: "+Math.ceil(0.5*(diff))+ " size: "+procesList.get(i).getListaStron().size()+" RAMKI: "+procesList.get(i).getNumerRamek());

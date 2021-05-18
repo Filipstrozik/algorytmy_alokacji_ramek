@@ -13,7 +13,6 @@ public class Generator {
     public static int ileAdresowZasadyLokalnosci=3;
     ArrayList<Integer> listaAdresowZasadyLokalnosci;
 
-    // konstruktor of course
     public Generator(){
         listaAdresowZasadyLokalnosci = new ArrayList<>();
 //        ileAdresowZasadyLokalnosci =0;
@@ -32,7 +31,7 @@ public class Generator {
 
         if(ZasadaLokalnosciTrigger){
 //            System.out.println("LOSUJE PRZEDZIAL");
-//            ileAdresowZasadyLokalnosci = (maxAdres-minAdres)/5; // zparametryzowac ilosc stron podzbioru
+            ileAdresowZasadyLokalnosci = (maxAdres-minAdres)/5; // zparametryzowac ilosc stron podzbioru
 //            ileAdresowZasadyLokalnosci =
             for(int i=0; i<ileAdresowZasadyLokalnosci; i++){
                 listaAdresowZasadyLokalnosci.add(rng.nextInt(maxAdres)+minAdres);
