@@ -117,6 +117,7 @@ public class STREFOWY {
 
                 }
                 //znaleziony do wstrzymania
+                //TODO znaleienie do wstrzymania nie dziala zawsze 10 potem 9 potem 8 itd - naprawic
                 System.out.println("Wstrzymuje proces: "+procesList.get(minIndex).getNumerProcesu());
                 procesList.get(minIndex).isStopped(true);//wstrzymujesz
                 D-=procesList.get(minIndex).getProcesWSS(); //odejmujesz jego wss od D (D sie zmniejszy az wejdzie w pierwszy if)

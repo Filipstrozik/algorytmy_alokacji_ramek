@@ -17,6 +17,7 @@ public class CZESTOSCBLEDOWSTRONY {
     int minIndex = 0;
     int maxIndex = 0;
     int tempBledy;
+    int counterStopRevive=0;
     private Comparator<Proces> comparatorPrzydzialu = new ComparatorPrzydzialu();
     private Comparator<Proces> comparatorKolejnosci = new ComparatorKolejnosci();
     private Comparator<Proces> comparatorPPF = new ComparatorPPF();
@@ -43,6 +44,7 @@ public class CZESTOSCBLEDOWSTRONY {
         I = (int) (0.3 *windowSize);
         zakonczoneProcesy=0;
         wstrzymaneProcesy=0;
+        counterStopRevive=0;
     }
 
 
@@ -158,13 +160,13 @@ public class CZESTOSCBLEDOWSTRONY {
                      }
                  }
              }
-             //TODO wznawianie procesu? ZROBIONE CHYBA
             if(wstrzymaneProcesy>0){
                 for(Proces p:procesList){
                     if(!p.getIsFinished() && p.getIsStopped() && wolneRamki>2*ileRamek/ileProcesow){
                         p.isStopped(false);
                         p.setNumerRamek(ileRamek/ileProcesow);
                         wstrzymaneProcesy--;
+                        counterStopRevive++;
                         System.out.println("Proces: " + p.getNumerProcesu() + " zostal wznowiony. Wstrzymane: " + wstrzymaneProcesy);
                         wolneRamki-= p.getNumerRamek();
                     }
@@ -174,8 +176,8 @@ public class CZESTOSCBLEDOWSTRONY {
                  int temp=0;
                  while (wolneRamki>ileRamek/ileProcesow && temp<ileProcesow){ //to je rozdziel
                      procesList.sort(comparatorPPF);
-                     System.out.println("WOLNE RAMKI "+ wolneRamki +" proces: "+procesList.get(temp).getNumerProcesu()+" kolejka "+procesList); //TODO sprawdz wsp czy sie zmienia i sortuje!
-                     if(procesList.get(temp).getIsStopped() || procesList.get(temp).getIsFinished()){ // tu bycmoze trzeba
+                     System.out.println("WOLNE RAMKI "+ wolneRamki +" proces: "+procesList.get(temp).getNumerProcesu()+" kolejka "+procesList);
+                     if(procesList.get(temp).getIsStopped() || procesList.get(temp).getIsFinished()){
                          temp++;
                      } else {
                          System.out.println("oddano!");
@@ -187,7 +189,7 @@ public class CZESTOSCBLEDOWSTRONY {
              }
         }
         System.out.println();
-        System.out.println("Suma Bledow: " + sumaBledow + " Ile wstrzymanych procesow: " + wstrzymaneProcesy);
+        System.out.println("Suma Bledow: " + sumaBledow + " Ile wstrzymanych procesow: " + wstrzymaneProcesy + " Ile wstrzyman/wznowien: " + counterStopRevive);
         System.out.println("Szamotanie: " + szamotanie);
         return sumaBledow;
     }
