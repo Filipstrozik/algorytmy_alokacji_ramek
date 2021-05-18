@@ -31,8 +31,6 @@ public class Main {
         pro.uruchom(iloscRamek);
         CZESTOSCBLEDOWSTRONY czeBledow = new CZESTOSCBLEDOWSTRONY(sym.listaProcesow, windowSize);
         czeBledow.uruchom(iloscRamek);
-//        sym.wyswietl();
-
         STREFOWY strefowy = new STREFOWY(sym.listaProcesow2,windowSize/2,windowSize);
         strefowy.uruchom(iloscRamek);
 

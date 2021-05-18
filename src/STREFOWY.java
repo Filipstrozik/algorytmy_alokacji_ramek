@@ -27,6 +27,10 @@ public class STREFOWY {
         ileWszystkichStron=0;
         for(Proces p:procesList){
             p.setNumerRamek(0);
+            p.setIsFinished(false);
+            p.indeks=0;
+            p.recentBledy=0;
+            p.recentRamkiClear();
             for(Strona s:p.getListaStron()){
                 ileWszystkichStron++;
                 s.setNotUsedTime(0);
@@ -63,8 +67,6 @@ public class STREFOWY {
         }
         procesList.sort(comparatorKolejnosci);
 
-
-
         //wypisanie
         for(int i=0; i<ileProcesow;i++){
             System.out.println("Proc: " +(i+1)+ " ile stron: "+ procesList.get(i).getListaStron().size() +
@@ -80,14 +82,18 @@ public class STREFOWY {
                     ArrayList<Strona> tempWSS = new ArrayList<>();
                     if(procesList.get(i).indeks>0){
                         if(procesList.get(i).indeks>=windowSize){
-                            for(int z=(procesList.get(i).indeks - (windowSize));z<=procesList.get(i).indeks;z++){
+                            for(int z=(procesList.get(i).indeks - (windowSize));z<procesList.get(i).indeks;z++){
+//                                System.out.println(" Proc: "+procesList.get(i).getNumerProcesu()+" Z: "+z+" indeks: "+procesList.get(i).indeks);
                                 tempWSS.add(procesList.get(i).getListaStron().get(z));
                             }
+//                            System.out.println(tempWSS);
                             procesList.get(i).setProcesWSS(ileUnikalnych(tempWSS,windowSize)); //przypinamy chwilawa wartosc wss do procesu ale jeszcze nie zatwierdzamy jej
                         } else if(procesList.get(i).indeks<(windowSize)){
-                            for(int z =0; z<=procesList.get(i).indeks;z++){
+                            for(int z =0; z<procesList.get(i).indeks;z++){
+//                                System.out.println(" Proc: "+procesList.get(i).getNumerProcesu()+" Z: "+z+" indeks: "+procesList.get(i).indeks);
                                 tempWSS.add(procesList.get(i).getListaStron().get(z));
                             }
+//                            System.out.println(tempWSS);
                             procesList.get(i).setProcesWSS(ileUnikalnych(tempWSS,procesList.get(i).indeks+1)); //przypinamy chwilawa wartosc wss do procesu ale jeszcze nie zatwierdzamy jej
 
                         }
@@ -121,7 +127,7 @@ public class STREFOWY {
                 int temp =0;
                 while(wolneRamki>0){ //TODO nie dawaj wstrzymanym
                     procesList.sort(comparatorWss);
-                    System.out.println("WOLNE RAMKI; "+ wolneRamki +" proces: "+procesList.get(temp).getNumerProcesu()+" kolejka "+procesList);
+//                    System.out.println("WOLNE RAMKI; "+ wolneRamki +" proces: "+procesList.get(temp).getNumerProcesu()+" kolejka "+procesList);
                     if(procesList.get(temp).getIsStopped()){
                         temp++;
                     } else {
@@ -167,7 +173,7 @@ public class STREFOWY {
                         } else if(procesList.get(i).getListaStron().size()-procesList.get(i).indeks <=windowSize){
                             System.out.println("Proces: "+procesList.get(i).getNumerProcesu()+" indeks " + procesList.get(i).indeks+" ramki:" +procesList.get(i).getNumerRamek());
                             System.out.println("Proces: "+procesList.get(i).getNumerProcesu()+" roznica "+(procesList.get(i).getListaStron().size()-procesList.get(i).indeks));
-                            if(procesList.get(i).indeks>0 || procesList.get(i).getNumerRamek()<procesList.get(i).getProcesWSS()){
+                            if(procesList.get(i).indeks>0 && procesList.get(i).getNumerRamek()<procesList.get(i).getProcesWSS()){
                                 procesList.get(i).setNumerRamek(procesList.get(i).getProcesWSS());//zatwierdzone WSS!
                             }
                             int diff = procesList.get(i).getListaStron().size()-procesList.get(i).indeks;

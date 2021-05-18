@@ -168,6 +168,11 @@ public class Proces implements Cloneable{
         return recentRamki;
     }
 
+    public void recentRamkiClear(){
+        recentRamki.clear();
+        recentIndeksy.clear();
+    }
+
     public void isStopped(boolean isStopped) {
         this.isStopped = isStopped;
     }

@@ -27,6 +27,10 @@ public class CZESTOSCBLEDOWSTRONY {
         ileWszystkichStron =0;
         for(Proces p: procesList){
             p.setNumerRamek(0);
+            p.setIsFinished(false);
+            p.indeks=0;
+            p.recentBledy=0;
+            p.recentRamkiClear();
             for(Strona s: p.getListaStron()){
                 ileWszystkichStron++;
                 s.setNotUsedTime(0);
