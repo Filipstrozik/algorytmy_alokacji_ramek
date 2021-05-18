@@ -105,7 +105,7 @@ public class STREFOWY {
 
             System.out.println("D<ileRamek: "+D+"  "+ileRamek);
             while (D>ileRamek){
-                System.out.println("PETLA?"); //TODO zawsze jest od 10 do 7
+                System.out.println("PETLA?"); //TODO zawsze jest od 10 do 7 o tak o jtak
                 for(Proces p:procesList){ //TODO przejdz na kartce z tym lepiej xd
                     if(!p.getIsFinished() && !p.getIsStopped()){
                         if(p.getProcesWSS()<procesList.get(minIndex).getProcesWSS() && !procesList.get(minIndex).getIsStopped() && !procesList.get(minIndex).getIsFinished()){
