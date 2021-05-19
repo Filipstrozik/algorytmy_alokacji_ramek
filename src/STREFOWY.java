@@ -17,6 +17,7 @@ public class STREFOWY {
     private int zakonczoneProcesy;
     private int C;
     private int D;
+    private int potrzebaWstrymania;
     private Comparator<Proces> comparatorPrzydzialu = new ComparatorPrzydzialu();
     private Comparator<Proces> comparatorWss = new ComparatorWss();
     private Comparator<Proces> comparatorKolejnosci = new ComparatorKolejnosci();
@@ -45,6 +46,7 @@ public class STREFOWY {
         zakonczoneProcesy=0;
         this.C = C;
         this.D = 0;
+        potrzebaWstrymania=0;
     }
 
     public int uruchom(int ileRamek){
@@ -119,6 +121,7 @@ public class STREFOWY {
                 //znaleziony do wstrzymania
                 System.out.println("Wstrzymuje proces: "+procesList.get(minIndex).getNumerProcesu());
                 procesList.get(minIndex).isStopped(true);//wstrzymujesz
+                potrzebaWstrymania++;
                 D-=procesList.get(minIndex).getProcesWSS(); //odejmujesz jego wss od D (D sie zmniejszy az wejdzie w pierwszy if)
                 wolneRamki = procesList.get(minIndex).getNumerRamek();
                 procesList.get(minIndex).setNumerRamek(Integer.MAX_VALUE); //ryzykowne posuniecie
@@ -201,7 +204,7 @@ public class STREFOWY {
             D=0;
         }
         System.out.println();
-        System.out.println("Suma Bledow: " + sumaBledow);
+        System.out.println("Suma Bledow: " + sumaBledow + " Potrzeb wstrzymania jakiegos procesu: " +  potrzebaWstrymania);
         System.out.println("Szamotan: " + szamotanie);
         return sumaBledow;
 

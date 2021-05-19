@@ -15,13 +15,13 @@ public class Main {
         System.out.println("jak maksymalnie dlugi ciag odwolan?");
         int maksDlugosc = sc.nextInt();
 
-        System.out.println("jak maksymalnie dlugi czas działania zsasdy lok.?");
+        System.out.println("jak maksymalnie dlugi czas działania zsasdy lok.?"); //zwiekszanie spowoduje ogolnie zmniejszenie bledow i szamotan szczegolnie dla mmodelu strefowego
         Generator.maxCzasZasadyLokalnosci = sc.nextInt();
 
         System.out.println("jakie okno czasowe?");
         int windowSize = sc.nextInt();
 
-        System.out.println("jakie co ile mierzymy WSS?");
+        System.out.println("jakie co ile mierzymy WSS?"); //1/2 wss najlepsze wyniki dla strefowego
         int C = sc.nextInt();
 
 
@@ -44,10 +44,11 @@ public class Main {
 
 
     //inne:
+    //nie wiem czy potrzebne w sumie te dwa
     //6 - U ogolnie 0.6 DODAC TO
     //7 - I ogolnie 0.2 DODAC TO
 
-    //7 - windowSize; DONE
-//    8 - C ile?    DONE
+    //dodac statystyke gdzie Z= suma WSS przekracza D jakos
+    //zeby pokazac że dla znikomej lok. oodwolan Model strefowy jest kosztowny
 
 }
