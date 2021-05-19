@@ -123,9 +123,9 @@ public class STREFOWY {
                 wolneRamki = procesList.get(minIndex).getNumerRamek();
                 procesList.get(minIndex).setNumerRamek(Integer.MAX_VALUE); //ryzykowne posuniecie
                 //TODO wss dla poczotkwoych jest rowne ifninity
-                //przydzial proporcjonalny
+                //przydzial proporcjonalnykol
                 int temp =0;
-                while(wolneRamki>0){ //TODO nie dawaj wstrzymanym
+                while(wolneRamki>0){
                     procesList.sort(comparatorWss);
                     System.out.println("WOLNE RAMKI; "+ wolneRamki +" proces: "+procesList.get(temp).getNumerProcesu()+" kolejka "+procesList);
                     if(procesList.get(temp).getIsStopped()){

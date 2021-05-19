@@ -5,7 +5,7 @@ import java.util.Comparator;
 public class PROPORCJONALNY {
     private ArrayList<Proces> procesList;
     private int ileProcesow;
-    private int iloscWszystkichStron; //TODO posprzatac kod
+    private int iloscWszystkichStron;
     private int szamotanie;
     private int windowSize;
 

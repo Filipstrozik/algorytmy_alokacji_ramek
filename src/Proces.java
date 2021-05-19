@@ -279,5 +279,4 @@ public class Proces implements Cloneable{
 
 
 
-    // uwaga control mistakes sam zrob
 }

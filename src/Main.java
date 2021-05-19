@@ -21,6 +21,9 @@ public class Main {
         System.out.println("jakie okno czasowe?");
         int windowSize = sc.nextInt();
 
+        System.out.println("jakie co ile mierzymy WSS?");
+        int C = sc.nextInt();
+
 
 
         Symulacja sym = new Symulacja(iloscProcesow, maksDlugosc);
@@ -31,7 +34,7 @@ public class Main {
         pro.uruchom(iloscRamek);
         CZESTOSCBLEDOWSTRONY czeBledow = new CZESTOSCBLEDOWSTRONY(sym.listaProcesow, windowSize);
         czeBledow.uruchom(iloscRamek);
-        STREFOWY strefowy = new STREFOWY(sym.listaProcesow2,windowSize/2,windowSize);
+        STREFOWY strefowy = new STREFOWY(sym.listaProcesow2,C,windowSize);
         strefowy.uruchom(iloscRamek);
 
     }
@@ -40,14 +43,11 @@ public class Main {
     //parametry:
 
 
-    //5 - podzbior niech bedzie automatycznie  - automatycznie
-
     //inne:
-    //6 - U ogolnie 0.6
-    //7 - I ogolnie 0.2
-    //szamotanie to ogolnie 1/2 windowSize
+    //6 - U ogolnie 0.6 DODAC TO
+    //7 - I ogolnie 0.2 DODAC TO
 
-    //7 - windowSize;
-    //8 - C ile?
+    //7 - windowSize; DONE
+//    8 - C ile?    DONE
 
 }
