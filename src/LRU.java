@@ -3,6 +3,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
+
+//W sumie drugi sposob na licznenie bledow wedlug procesora lepszy, ale zostawiam ten kod, może się przyda do innch projektow
+
 public class LRU {
     private ArrayList<Strona> list;
 

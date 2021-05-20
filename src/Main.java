@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+
 import java.util.Scanner;
 
 public class Main {
@@ -21,34 +21,29 @@ public class Main {
         System.out.println("jakie okno czasowe?");
         int windowSize = sc.nextInt();
 
+        System.out.println("PODAJ U DLA PPF");
+        double U = sc.nextDouble();
+
+        System.out.println("PODAJ L DLA PPF");
+        double L = sc.nextDouble();
+
+
         System.out.println("jakie co ile mierzymy WSS?"); //1/2 wss najlepsze wyniki dla strefowego
         int C = sc.nextInt();
 
 
 
         Symulacja sym = new Symulacja(iloscProcesow, maksDlugosc);
-        sym.wyswietl();
+//        sym.wyswietl();
         ROWNY rowny = new ROWNY(sym.listaProcesow, windowSize);
         rowny.uruchom(iloscRamek);
         PROPORCJONALNY pro = new PROPORCJONALNY(sym.listaProcesow, windowSize);
         pro.uruchom(iloscRamek);
-        CZESTOSCBLEDOWSTRONY czeBledow = new CZESTOSCBLEDOWSTRONY(sym.listaProcesow, windowSize);
+        CZESTOSCBLEDOWSTRONY czeBledow = new CZESTOSCBLEDOWSTRONY(sym.listaProcesow, windowSize,U, L);
         czeBledow.uruchom(iloscRamek);
         STREFOWY strefowy = new STREFOWY(sym.listaProcesow2,C,windowSize);
         strefowy.uruchom(iloscRamek);
 
     }
-
-    //TODO poniżej
-    //parametry:
-
-
-    //inne:
-    //nie wiem czy potrzebne w sumie te dwa
-    //6 - U ogolnie 0.6 DODAC TO
-    //7 - I ogolnie 0.2 DODAC TO
-
-    //dodac statystyke gdzie Z= suma WSS przekracza D jakos
-    //zeby pokazac że dla znikomej lok. oodwolan Model strefowy jest kosztowny
 
 }

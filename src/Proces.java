@@ -108,62 +108,6 @@ public class Proces implements Cloneable{
         this.isFinished = isfinish;
     }
 
-    private class Pair{
-        private boolean contains;
-        private int index;
-
-        public Pair(boolean contains, int index){
-            this.contains=contains;
-            this.index=index;
-        }
-
-        public boolean getBoolean(){
-            return contains;
-        }
-
-        public int getIndex(){
-            return index;
-        }
-
-    }
-
-    private  ArrayList<Strona> frames = new ArrayList<>();
-
-    private Pair contains(ArrayList<Strona> list, int pageNumber){
-        boolean Contains=false;
-        int index = -1;
-        ArrayList <Integer> pageNumbersList = new ArrayList<>();
-        for(Strona x: list){
-            pageNumbersList.add(x.getPageNumber());
-        }
-
-        for(int i=0; i<pageNumbersList.size(); i++){
-            if(pageNumbersList.get(i)==pageNumber){
-                Contains = true;
-                index = i;
-                break;
-            }
-        }
-        return new Pair(Contains, index);
-    }
-
-    private int faults = 0;
-
-    public void addFaults(int newMistakes){
-        faults = faults+newMistakes;
-    }
-    public int getFaults(){
-        return faults;
-    }
-
-
-    private int freeeFrames;
-
-    public int getFreeFrames(){
-        return freeeFrames;
-    }
-
-
     public HashSet<Integer> getRecentRamki(){
         return recentRamki;
     }
@@ -188,18 +132,6 @@ public class Proces implements Cloneable{
 
     public int uruchomLRU(ArrayList<Strona> list, int iloscRamek){
         int bledyStron=0;
-//        if(recentRamki!=null){
-//            System.out.println("recentRamki:");
-//            System.out.println(recentRamki);
-//        }
-//        if(recentIndeksy!=null){
-//            System.out.println("recentIndeksy:");
-//            System.out.println(recentIndeksy);
-//        }
-//
-//        System.out.println("ILOSC RAMEK: " +iloscRamek);
-//
-//        System.out.println(list);
 
         ArrayList<Strona> list1 = new ArrayList<Strona>(list.size());
         HashSet<Integer> ramka = new HashSet<>();
@@ -276,7 +208,6 @@ public class Proces implements Cloneable{
         recentIndeksy = indeksy;
         return bledyStron;
     }
-
 
 
 }

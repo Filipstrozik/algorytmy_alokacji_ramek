@@ -37,7 +37,7 @@ public class ROWNY {
                     sumaBledow += lokalneBledy;
                     tempbledy += lokalneBledy;
 //                    System.out.println("Proc "+procesList.get(i).getNumerProcesu()+" lokalne bledy: "+lokalneBledy+" suma bledow: "+tempbledy);
-                    if (lokalneBledy >= 0.5 * windowSize) { // xd
+                    if (lokalneBledy > 0.5 * windowSize) { // xd
                         szamotanie++;
                     }
                     szukanieSzamotania.clear();
@@ -52,7 +52,7 @@ public class ROWNY {
                     sumaBledow += lokalneBledy;
                     tempbledy += lokalneBledy;
 //                    System.out.println("Proc"+procesList.get(i).getNumerProcesu()+"lokalne bledy: "+lokalneBledy+" suma bledow: "+tempbledy);
-                    if (lokalneBledy >= 0.5 * diff) {
+                    if (lokalneBledy > 0.5 * diff) {
                         szamotanie++;
                     }
                     procesList.get(i).setIsFinished(true); //zakonczenie procesu
